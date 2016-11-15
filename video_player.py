@@ -14,16 +14,16 @@ GPIO.setwarnings(False)
 # Pin Definitons
 
 #LED assignment
-buttonLed1 = 22
-buttonLed2 = 23
-buttonLed3 = 20
-buttonLed4 = 21 
+buttonLed4 = 22
+buttonLed3 = 23
+buttonLed2 = 20
+buttonLed1 = 21 
 
 #button assignment
-button1 = 12 
-button2 = 13 
-button3 = 16 
-button4 = 17 
+button4 = 12 
+button3 = 13 
+button2 = 16 
+button1 = 17 
 
 # Pin Setup
 # Broadcom pin-numbering scheme
@@ -61,6 +61,7 @@ os.system('killall omxplayer.bin')
 process_name= "omxplayer.bin" 
 
 #Uses pygame to hide desktop
+#Prevents user killing the process
 screen = pygame.display.set_mode((1024, 768), pygame.NOFRAME)
 pygame.mouse.set_visible(False)
 
@@ -118,6 +119,8 @@ while True:
 		time.sleep(.01)
 		omxp = Popen(['omxplayer',movie3])
 		time.sleep(1)
+	
+				
 	
 
 			
