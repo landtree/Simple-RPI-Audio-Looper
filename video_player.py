@@ -5,32 +5,41 @@ import sys
 import os
 import subprocess
 from subprocess import Popen
+import pygame
 
+
+#ignores GPIO errors
 GPIO.setwarnings(False)
+
 # Pin Definitons
-#LEDs
+
+#LED assignment
 buttonLed1 = 22
 buttonLed2 = 23
 buttonLed3 = 20
 buttonLed4 = 21 
 
-#buttons
+#button assignment
 button1 = 12 
 button2 = 13 
 button3 = 16 
 button4 = 17 
 
 # Pin Setup
-GPIO.setmode(GPIO.BCM) # Broadcom pin-numbering scheme
-GPIO.setup(buttonLed1, GPIO.OUT) # LED pin set as output
-GPIO.setup(buttonLed2, GPIO.OUT) # LED pin set as output
-GPIO.setup(buttonLed3, GPIO.OUT) # LED pin set as output
-GPIO.setup(buttonLed4, GPIO.OUT) # LED pin set as output
+# Broadcom pin-numbering scheme
+GPIO.setmode(GPIO.BCM) 
 
-GPIO.setup(button1, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Button pin set as input w pull-up
-GPIO.setup(button2, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Button pin set as input w pull-up
-GPIO.setup(button3, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Button pin set as input w pull-up
-GPIO.setup(button4, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Button pin set as input w pull-up
+# LED pin set as output
+GPIO.setup(buttonLed1, GPIO.OUT) 
+GPIO.setup(buttonLed2, GPIO.OUT) 
+GPIO.setup(buttonLed3, GPIO.OUT) 
+GPIO.setup(buttonLed4, GPIO.OUT) 
+
+# Button pin set as input with pull-up
+GPIO.setup(button1, GPIO.IN, pull_up_down=GPIO.PUD_UP) 
+GPIO.setup(button2, GPIO.IN, pull_up_down=GPIO.PUD_UP) 
+GPIO.setup(button3, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(button4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Initial state for LEDs
 GPIO.output(buttonLed1, GPIO.LOW)
@@ -39,88 +48,79 @@ GPIO.output(buttonLed3, GPIO.LOW)
 GPIO.output(buttonLed4, GPIO.LOW)
 
 # Video assignment
-movie1 = '/home/pi/code/video/4.mp4'
-movie2 = '/home/pi/code/video/5.mp4'
-movie3 = '/home/pi/code/video/6.mp4'
-movie4 = '/home/pi/code/video/7.mp4'
-movie5 = '/home/pi/code/video/8.mp4'
+movie1 = '/home/pi/code/video/1.mp4'
+movie2 = '/home/pi/code/video/2.mp4'
+movie3 = '/home/pi/code/video/3.mp4'
+movie4 = '/home/pi/code/video/4.mp4'
+movie5 = '/home/pi/code/video/splash.mp4'
 
-#tracking functions
-play = False
-stop = True
+#kills any active instance of OMXplayer on start
+os.system('killall omxplayer.bin')
+
+#this is what process it is looking for is running
+process_name= "omxplayer.bin" 
+
+#Uses pygame to hide desktop
+screen = pygame.display.set_mode((1024, 768), pygame.NOFRAME)
+pygame.mouse.set_visible(False)
+
+
 
 while True:
+#varible to store if omxplayer is running
+	tmp = os.popen("ps -Af").read()
+
 	if GPIO.input(button1):
 		time.sleep(.01)
-		print "Not Pressed"		
 	else:
 		GPIO.output(buttonLed1, GPIO.HIGH)
 		GPIO.output(buttonLed2, GPIO.LOW)
 		GPIO.output(buttonLed3, GPIO.LOW)
 		GPIO.output(buttonLed4, GPIO.LOW)
 		os.system('killall omxplayer.bin')
-		time.sleep(2)
-		omxp = Popen(['omxplayer',movie1])
 		time.sleep(1)
-		
+		omxp = Popen(['omxplayer',movie1])
+		time.sleep(1)		
 	if GPIO.input(button2):		
-		time.sleep(.01)
-		print "Not Pressed"		
+		time.sleep(.01)		
 	else:
 		GPIO.output(buttonLed1, GPIO.LOW)
 		GPIO.output(buttonLed2, GPIO.HIGH)
 		GPIO.output(buttonLed3, GPIO.LOW)
 		GPIO.output(buttonLed4, GPIO.LOW)
 		os.system('killall omxplayer.bin')
-		time.sleep(2)
+		time.sleep(1)
 		omxp = Popen(['omxplayer',movie2])
 		time.sleep(1)
 	if GPIO.input(button3):		
-		time.sleep(.01)
-		print "Not Pressed"		
+		time.sleep(.01)		
 	else:
 		GPIO.output(buttonLed1, GPIO.LOW)
 		GPIO.output(buttonLed2, GPIO.LOW)
 		GPIO.output(buttonLed3, GPIO.HIGH)
 		GPIO.output(buttonLed4, GPIO.LOW)
 		os.system('killall omxplayer.bin')
-		time.sleep(2)
+		time.sleep(1)
 		omxp = Popen(['omxplayer',movie3])
 		time.sleep(1)		
 	if GPIO.input(button4):
-		time.sleep(.01)
-		print "Not Pressed"
-		
+		time.sleep(.01)		
 	else:		
 		GPIO.output(buttonLed1, GPIO.LOW)
 		GPIO.output(buttonLed2, GPIO.LOW)
 		GPIO.output(buttonLed3, GPIO.LOW)
 		GPIO.output(buttonLed4, GPIO.HIGH)
 		os.system('killall omxplayer.bin')
-		time.sleep(2)
+		time.sleep(1)
 		omxp = Popen(['omxplayer',movie4])
 		time.sleep(1)
-		
-		
-		
-		
-		
-		
-	#if GPIO:
-		#print "THIS IS PLAYING THE SPLASH"
-		#os.system('killall omxplayer.bin')
-		#time.sleep(2)
-		#omxp = Popen(['omxplayer',movie5])
-		#time.sleep(1)
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	if process_name not in tmp[:]:		 
+		time.sleep(.01)
+		omxp = Popen(['omxplayer',movie3])
+		time.sleep(1)
+	
+
+			
 time.sleep(.01)	
 
 	
