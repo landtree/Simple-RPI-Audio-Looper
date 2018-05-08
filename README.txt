@@ -10,4 +10,4 @@ sudo nano /etc/rc.local
 
 and then replace the IP dummy script with
 
-sudo python /home/pi/code/video_player.py
+sudo python /home/pi/code/audio.py
